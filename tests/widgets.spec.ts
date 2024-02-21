@@ -68,6 +68,24 @@ test('Date Picker', async () => {
 });
 
 test('Slider', async () => {
+
+  await page.locator('li').filter({ hasText: 'Slider' }).click();
+  async function setSliderValue(page: Page, sliderXPath: string, valueAsPercent: number) {
+    const sliderBound = await page.locator(sliderXPath).boundingBox();
+    const targetX = sliderBound.x + (sliderBound.width * valueAsPercent / 100);
+    const targetY = sliderBound.y + sliderBound.height / 2;
+    await page.mouse.move(targetX, targetY);
+    await page.mouse.down();
+    await page.mouse.move(sliderBound.x + (sliderBound.width * valueAsPercent) / 100, sliderBound.y + sliderBound.height / 2);
+    await page.mouse.up();
+  }
+
+  await setSliderValue(page, '//*[@id="sliderContainer"]/div[1]', 20);
+  await setSliderValue(page, '//*[@id="sliderContainer"]/div[1]', 30);
+  await setSliderValue(page, '//*[@id="sliderContainer"]/div[1]', 40);
+  await setSliderValue(page, '//*[@id="sliderContainer"]/div[1]', 50);
+  await setSliderValue(page, '//*[@id="sliderContainer"]/div[1]', 100);
+
 });
 
 test('Progress Bar', async () => {
@@ -96,28 +114,28 @@ test('Tool Tips', async () => {
 });
 
 test('Menu', async () => {
-    await page.locator('li').filter({ hasText: /^Menu$/ }).click();
-    await page.getByRole('link', { name: 'Main Item 1' }).click();
-    await page.getByRole('link', { name: 'Main Item 2' }).click();
-    await page.getByRole('link', { name: 'Sub Item' }).first().click();
-    await page.getByRole('link', { name: 'Sub Item' }).nth(1).click();
-    await page.getByRole('link', { name: 'SUB SUB LIST »' }).click();
-    await page.getByRole('link', { name: 'Sub Sub Item 1' }).click();
-    await page.getByRole('link', { name: 'Sub Sub Item 2' }).click();
-    await page.getByRole('link', { name: 'Main Item 3' }).click();
+  await page.locator('li').filter({ hasText: /^Menu$/ }).click();
+  await page.getByRole('link', { name: 'Main Item 1' }).click();
+  await page.getByRole('link', { name: 'Main Item 2' }).click();
+  await page.getByRole('link', { name: 'Sub Item' }).first().click();
+  await page.getByRole('link', { name: 'Sub Item' }).nth(1).click();
+  await page.getByRole('link', { name: 'SUB SUB LIST »' }).click();
+  await page.getByRole('link', { name: 'Sub Sub Item 1' }).click();
+  await page.getByRole('link', { name: 'Sub Sub Item 2' }).click();
+  await page.getByRole('link', { name: 'Main Item 3' }).click();
 });
 
 test('Select Manu', async () => {
-    await page.locator('li').filter({ hasText: 'Select Menu' }).click();
-    await page.locator('#withOptGroup div').filter({ hasText: 'Select Option' }).nth(1).click();
-    await page.getByText('Group 1, option 1', { exact: true }).click();
-    await page.locator('#selectOne div').filter({ hasText: 'Select Title' }).nth(1).click();
-    await page.getByText('Mr.', { exact: true }).click();
-    await page.locator('#oldSelectMenu').selectOption('4');
-    await page.locator('#selectMenuContainer svg').nth(2).click();
-    await page.locator('#react-select-6-option-0').click();
-    await page.locator('#react-select-6-option-1').click();
-    await page.locator('#react-select-6-option-2').click();
-    await page.locator('#react-select-6-option-3').click();
-    await page.locator('#cars').selectOption('saab');
+  await page.locator('li').filter({ hasText: 'Select Menu' }).click();
+  await page.locator('#withOptGroup div').filter({ hasText: 'Select Option' }).nth(1).click();
+  await page.getByText('Group 1, option 1', { exact: true }).click();
+  await page.locator('#selectOne div').filter({ hasText: 'Select Title' }).nth(1).click();
+  await page.getByText('Mr.', { exact: true }).click();
+  await page.locator('#oldSelectMenu').selectOption('4');
+  await page.locator('#selectMenuContainer svg').nth(2).click();
+  await page.locator('#react-select-6-option-0').click();
+  await page.locator('#react-select-6-option-1').click();
+  await page.locator('#react-select-6-option-2').click();
+  await page.locator('#react-select-6-option-3').click();
+  await page.locator('#cars').selectOption('saab');
 });
