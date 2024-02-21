@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 
-test.describe.configure({ mode: 'serial' });
+test.describe.configure({ mode: 'parallel' });
 
 let page: Page;
 
@@ -18,7 +18,8 @@ test.afterEach(async () => {
 });
 
 test('Accordian', async () => {
-  await page.locator('li').filter({ hasText: 'Accordian' }).click();
+  await page.getByText('Accordian').click();
+  await page.getByText('What is Lorem Ipsum?').click();
   await page.getByText('What is Lorem Ipsum?').click();
   await page.getByText('Lorem Ipsum is simply dummy').click();
   await page.getByText('Where does it come from?').click();
@@ -27,6 +28,7 @@ test('Accordian', async () => {
   await page.getByText('Where does it come from?').click();
   await page.getByText('Why do we use it?').click();
   await page.getByText('It is a long established fact').click();
+  await page.getByText('Why do we use it?').click();
 });
 
 test('Auto Complete', async () => {
@@ -117,15 +119,15 @@ test('Menu', async () => {
   await page.locator('li').filter({ hasText: /^Menu$/ }).click();
   await page.getByRole('link', { name: 'Main Item 1' }).click();
   await page.getByRole('link', { name: 'Main Item 2' }).click();
-  await page.getByRole('link', { name: 'Sub Item' }).first().click();
-  await page.getByRole('link', { name: 'Sub Item' }).nth(1).click();
-  await page.getByRole('link', { name: 'SUB SUB LIST »' }).click();
-  await page.getByRole('link', { name: 'Sub Sub Item 1' }).click();
-  await page.getByRole('link', { name: 'Sub Sub Item 2' }).click();
+  await page.locator("#nav > li:nth-child(2) > ul > li:nth-child(1) > a").hover();
+  await page.locator("#nav > li:nth-child(2) > ul > li:nth-child(2) > a").hover();
+  await page.locator("#nav > li:nth-child(2) > ul > li:nth-child(3) > a").hover();
+  await page.locator("#nav > li:nth-child(2) > ul > li:nth-child(3) > ul > li:nth-child(1) > a").hover();
+  await page.locator("#nav > li:nth-child(2) > ul > li:nth-child(3) > ul > li:nth-child(2) > a").hover();
   await page.getByRole('link', { name: 'Main Item 3' }).click();
 });
 
-test('Select Manu', async () => {
+test('Select Menu', async () => {
   await page.locator('li').filter({ hasText: 'Select Menu' }).click();
   await page.locator('#withOptGroup div').filter({ hasText: 'Select Option' }).nth(1).click();
   await page.getByText('Group 1, option 1', { exact: true }).click();
@@ -133,9 +135,14 @@ test('Select Manu', async () => {
   await page.getByText('Mr.', { exact: true }).click();
   await page.locator('#oldSelectMenu').selectOption('4');
   await page.locator('#selectMenuContainer svg').nth(2).click();
-  await page.locator('#react-select-6-option-0').click();
-  await page.locator('#react-select-6-option-1').click();
-  await page.locator('#react-select-6-option-2').click();
-  await page.locator('#react-select-6-option-3').click();
+  await page.locator('div').filter({ hasText: /^Select\.\.\.$/ }).nth(1).click();
+  await page.locator('#react-select-4-input').fill('Green');
+  await page.locator('#react-select-4-option-0').click();
+  await page.locator('#react-select-4-input').fill('Blue');
+  await page.locator('#react-select-4-option-1').click();
+  await page.locator('#react-select-4-input').fill('Black');
+  await page.locator('#react-select-4-option-2').click();
+  await page.locator('#react-select-4-input').fill('Red');
+  await page.locator('#react-select-4-option-3').click();
   await page.locator('#cars').selectOption('saab');
 });
